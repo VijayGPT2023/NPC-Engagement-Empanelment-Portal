@@ -1,0 +1,468 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── ADMIN & AUTH ────────────────────────────────────────────────
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  password      String
+  name          String
+  role          String   @default("applicant") // applicant | admin | screening_committee | empanelment_committee | dg
+  office        String?  // NPC office association
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  profile                 UserProfile?
+  engagementApplications  EngagementApplication[]
+  empanelmentApplications EmpanelmentApplication[]
+  screeningReviews        ScreeningReview[]
+  notifications           Notification[]
+}
+
+// ─── USER PROFILE (Master data, saved once, reused across applications) ─
+
+model UserProfile {
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+
+  // Personal Details
+  title                 String   // Dr. | Mr. | Mrs. | Ms.
+  fullName              String
+  fatherMotherSpouseName String
+  dateOfBirth           DateTime
+  gender                String
+  nationality           String   @default("Indian")
+  aadhaarNo             String
+  contactNo             String
+  alternateContactNo    String?
+  permanentAddress      String
+  correspondenceAddress String
+
+  // Photo & CV (always available)
+  photoPath             String?
+  cvPath                String?
+  aadhaarDocPath        String?
+  dobProofPath          String?
+
+  // Retirement details
+  isRetiredPerson       Boolean  @default(false)
+  retirementDate        DateTime?
+  lastOrganization      String?
+  lastDesignation       String?
+  ppoNumber             String?
+  ppoDocPath            String?
+
+  isComplete            Boolean  @default(false) // true once all mandatory fields filled
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                  User @relation(fields: [userId], references: [id])
+  qualifications        ProfileQualification[]
+  experiences           ProfileExperience[]
+}
+
+model ProfileQualification {
+  id                    String   @id @default(uuid())
+  profileId             String
+  degree                String
+  discipline            String
+  collegeName           String
+  universityInstitution String
+  yearOfPassing         Int
+  marksPercentage       Float?
+  cgpa                  Float?
+  isHighestQualification Boolean @default(false)
+  certificatePath       String?  // uploaded certificate
+
+  profile UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model ProfileExperience {
+  id                    String   @id @default(uuid())
+  profileId             String
+  organizationName      String
+  designation           String
+  startDate             DateTime
+  endDate               DateTime?
+  isCurrent             Boolean  @default(false)
+  remunerationPayBand   String?
+  dutiesDescription     String
+  sectorType            String   // government | public | private
+  certificatePath       String?  // uploaded experience certificate
+
+  profile UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+// ─── POST REQUIREMENTS (Admin publishes these) ──────────────────
+
+model PostRequirement {
+  id                    String   @id @default(uuid())
+  advertisementNo       String   @unique
+  title                 String
+  functionalRole        String   // Designation from Annex-II-A/B
+  domain                String   // AB, ES, ECA, EM, HRM, IE, IT, FIN, ADM, ID, IS
+  engagementType        String   // full_time | part_time | lump_sum | revenue_sharing | resource_person
+  numberOfPositions     Int      @default(1)
+  placeOfDeployment     String   // NPC office
+  minQualification      String
+  minExperienceYears    Int
+  maxAgeLimitYears      Int?
+  remunerationRange     String?
+  contractPeriod        String?
+  eligibilityCriteria   String   // detailed text
+  workResponsibilities  String
+  termsAndConditions    String   @default("")
+  applicationDeadline   DateTime
+  status                String   @default("active") // active | closed | cancelled
+  createdBy             String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  applications EngagementApplication[]
+}
+
+// ─── ENGAGEMENT APPLICATION ─────────────────────────────────────
+
+model EngagementApplication {
+  id                    String   @id @default(uuid())
+  applicationNo         String   @unique
+  userId                String
+  postRequirementId     String
+  status                String   @default("submitted") // submitted | under_screening | shortlisted | selected | rejected | offered | accepted
+
+  // Personal Details
+  title                 String   // Dr. | Mr. | Mrs. | Ms.
+  fullName              String
+  fatherMotherSpouseName String
+  dateOfBirth           DateTime
+  gender                String
+  nationality           String   @default("Indian")
+  aadhaarNo             String
+  contactNo             String
+  alternateContactNo    String?
+  emailId               String
+  permanentAddress      String
+  correspondenceAddress String
+  postAppliedFor        String
+
+  // Retirement details (if retired person)
+  isRetiredPerson       Boolean  @default(false)
+  retirementDate        DateTime?
+  lastOrganization      String?
+  lastDesignation       String?
+  ppoNumber             String?
+
+  // Screening
+  autoScreenScore       Float?
+  autoScreenResult      String?  // eligible | not_eligible | needs_review
+  autoScreenDetails     String?  // JSON with detailed breakdown
+
+  // Empanelment opt-in
+  alsoApplyEmpanelment  Boolean  @default(false)
+  empanelmentApplicationId String?
+
+  // Declaration
+  declarationAccepted   Boolean  @default(false)
+  declarationDate       DateTime?
+
+  submittedAt           DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                  User               @relation(fields: [userId], references: [id])
+  postRequirement       PostRequirement    @relation(fields: [postRequirementId], references: [id])
+  qualifications        Qualification[]
+  experiences           Experience[]
+  documents             Document[]
+  screeningReviews      ScreeningReview[]
+
+  empanelmentApplication EmpanelmentApplication? @relation(fields: [empanelmentApplicationId], references: [id])
+}
+
+// ─── EMPANELMENT APPLICATION ────────────────────────────────────
+
+model EmpanelmentApplication {
+  id                    String   @id @default(uuid())
+  applicationNo         String   @unique
+  userId                String
+  status                String   @default("submitted") // submitted | under_screening | shortlisted | interview_scheduled | empanelled | rejected
+
+  // Personal Details
+  title                 String
+  fullName              String
+  fatherMotherSpouseName String?
+  dateOfBirth           DateTime
+  gender                String
+  nationality           String   @default("Indian")
+  aadhaarNo             String?
+  contactNo             String
+  alternateContactNo    String?
+  emailId               String
+  personalAddress       String
+
+  // Empanelment-specific fields
+  categoryApplied       String   // Advisor | Senior Consultant | Consultant | Project Associate | Young Professional
+  serviceType           String   // consultancy | training | both
+  domains               String   // comma-separated: AB, ES, ECA, EM, HRM, IE, IT, FIN, ADM, ID, IS
+  areasOfExpertise      String   // comma-separated up to 10
+
+  // Preferred NPC offices (up to 3)
+  preferredOffice1      String
+  preferredOffice2      String?
+  preferredOffice3      String?
+  willingToWorkAnywhere Boolean  @default(false)
+
+  // Screening
+  autoScreenScore       Float?
+  autoScreenResult      String?
+  autoScreenDetails     String?
+
+  // Empanelment details (post-approval)
+  empanelmentLetterNo   String?
+  empanelmentDate       DateTime?
+  empanelmentValidTill  DateTime?
+
+  // Declaration
+  declarationAccepted   Boolean  @default(false)
+  declarationDate       DateTime?
+
+  submittedAt           DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                       User                    @relation(fields: [userId], references: [id])
+  qualifications             EmpanelmentQualification[]
+  experiences                EmpanelmentExperience[]
+  trainingsConducted         TrainingConducted[]
+  consultancyProjects        ConsultancyProject[]
+  actionResearchProjects     ActionResearchProject[]
+  certifications             Certification[]
+  professionalMemberships    ProfessionalMembership[]
+  documents                  EmpanelmentDocument[]
+  screeningReviews           ScreeningReview[]
+  linkedEngagementApps       EngagementApplication[]
+}
+
+// ─── QUALIFICATIONS (Engagement) ────────────────────────────────
+
+model Qualification {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  degree                String
+  discipline            String
+  collegeName           String
+  universityInstitution String
+  yearOfPassing         Int
+  marksPercentage       Float?
+  cgpa                  Float?
+  isHighestQualification Boolean @default(false)
+  documentId            String?
+
+  application EngagementApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── QUALIFICATIONS (Empanelment) ───────────────────────────────
+
+model EmpanelmentQualification {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  degree                String
+  discipline            String
+  collegeName           String
+  universityInstitution String
+  yearOfPassing         Int
+  marksPercentage       Float?
+  cgpa                  Float?
+  isHighestQualification Boolean @default(false)
+  groupAService         Boolean @default(false)
+  documentId            String?
+
+  application EmpanelmentApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── EXPERIENCE (Engagement) ────────────────────────────────────
+
+model Experience {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  organizationName      String
+  designation           String
+  startDate             DateTime
+  endDate               DateTime?
+  isCurrent             Boolean  @default(false)
+  remunerationPayBand   String?
+  dutiesDescription     String
+  sectorType            String   // government | public | private
+  documentId            String?
+
+  application EngagementApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── EXPERIENCE (Empanelment) ───────────────────────────────────
+
+model EmpanelmentExperience {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  organizationName      String
+  designation           String
+  startDate             DateTime
+  endDate               DateTime?
+  isCurrent             Boolean  @default(false)
+  dutiesDescription     String
+  sectorType            String
+  documentId            String?
+
+  application EmpanelmentApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── TRAINING CONDUCTED (Empanelment) ───────────────────────────
+
+model TrainingConducted {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  trainingTitle         String
+  clientOrganization    String
+  clientType            String   // government_public | private
+  trainingMode          String   // online | physical
+  startDate             DateTime
+  endDate               DateTime
+  numberOfParticipants  Int?
+  documentId            String?
+
+  application EmpanelmentApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── CONSULTANCY PROJECTS (Empanelment) ─────────────────────────
+
+model ConsultancyProject {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  projectTitle          String
+  clientOrganization    String
+  clientType            String
+  startDate             DateTime
+  endDate               DateTime?
+  projectDescription    String
+  documentId            String?
+
+  application EmpanelmentApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── ACTION RESEARCH PROJECTS (Empanelment) ─────────────────────
+
+model ActionResearchProject {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  projectTitle          String
+  clientOrganization    String
+  clientType            String
+  startDate             DateTime
+  endDate               DateTime?
+  projectDescription    String
+  documentId            String?
+
+  application EmpanelmentApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── CERTIFICATIONS (Empanelment) ───────────────────────────────
+
+model Certification {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  certificationName     String
+  issuingOrganization   String
+  dateObtained          DateTime
+  validTill             DateTime?
+  documentId            String?
+
+  application EmpanelmentApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── PROFESSIONAL MEMBERSHIPS (Empanelment) ─────────────────────
+
+model ProfessionalMembership {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  institutionName       String
+  membershipType        String
+  fromDate              DateTime
+  toDate                DateTime?
+
+  application EmpanelmentApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── DOCUMENTS (Engagement) ─────────────────────────────────────
+
+model Document {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  documentType          String   // photo | aadhaar | dob_proof | qualification | experience | ppo | cv | other
+  documentName          String
+  fileName              String
+  filePath              String
+  fileSize              Int
+  mimeType              String
+  keyDetails            String?  // JSON with inline key details
+  verificationStatus    String   @default("pending") // pending | verified | rejected
+  verificationRemarks   String?
+  uploadedAt            DateTime @default(now())
+
+  application EngagementApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── DOCUMENTS (Empanelment) ────────────────────────────────────
+
+model EmpanelmentDocument {
+  id                    String   @id @default(uuid())
+  applicationId         String
+  documentType          String
+  documentName          String
+  fileName              String
+  filePath              String
+  fileSize              Int
+  mimeType              String
+  keyDetails            String?
+  verificationStatus    String   @default("pending")
+  verificationRemarks   String?
+  uploadedAt            DateTime @default(now())
+
+  application EmpanelmentApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ─── SCREENING REVIEW ───────────────────────────────────────────
+
+model ScreeningReview {
+  id                       String   @id @default(uuid())
+  reviewerId               String
+  applicationId            String?
+  empanelmentApplicationId String?
+  applicationType          String   // engagement | empanelment
+  decision                 String   // shortlisted | rejected | needs_review
+  remarks                  String?
+  score                    Float?
+  reviewedAt               DateTime @default(now())
+
+  reviewer       User                    @relation(fields: [reviewerId], references: [id])
+  engagementApp  EngagementApplication?  @relation(fields: [applicationId], references: [id])
+  empanelmentApp EmpanelmentApplication? @relation(fields: [empanelmentApplicationId], references: [id])
+}
+
+// ─── NOTIFICATIONS ──────────────────────────────────────────────
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      String   // application_status | screening | interview | general
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}

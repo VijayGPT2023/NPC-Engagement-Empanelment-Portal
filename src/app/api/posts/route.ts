@@ -1,0 +1,154 @@
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { getSessionFromRequest } from "@/lib/auth";
+
+// GET: List all active posts (public)
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get("status") || "active";
+    const domain = searchParams.get("domain");
+    const engagementType = searchParams.get("engagementType");
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limit = parseInt(searchParams.get("limit") || "20", 10);
+    const skip = (page - 1) * limit;
+
+    const where: Record<string, unknown> = { status };
+    if (domain) where.domain = domain;
+    if (engagementType) where.engagementType = engagementType;
+
+    const [posts, total] = await Promise.all([
+      prisma.postRequirement.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.postRequirement.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      posts,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error) {
+    console.error("Get posts error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+// POST: Create new post (admin only)
+export async function POST(request: NextRequest) {
+  try {
+    const session = getSessionFromRequest(request);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    if (session.role !== "admin" && session.role !== "dg") {
+      return NextResponse.json({ error: "Forbidden: admin access required" }, { status: 403 });
+    }
+
+    const body = await request.json();
+    const {
+      advertisementNo,
+      title,
+      functionalRole,
+      domain,
+      engagementType,
+      numberOfPositions,
+      placeOfDeployment,
+      minQualification,
+      minExperienceYears,
+      maxAgeLimitYears,
+      remunerationRange,
+      contractPeriod,
+      eligibilityCriteria,
+      workResponsibilities,
+      termsAndConditions,
+      applicationDeadline,
+    } = body;
+
+    // Validate required fields
+    const requiredFields = [
+      "advertisementNo",
+      "title",
+      "functionalRole",
+      "domain",
+      "engagementType",
+      "placeOfDeployment",
+      "minQualification",
+      "minExperienceYears",
+      "eligibilityCriteria",
+      "workResponsibilities",
+      "applicationDeadline",
+    ];
+    const missing = requiredFields.filter((f) => !body[f] && body[f] !== 0);
+    if (missing.length > 0) {
+      return NextResponse.json(
+        { error: `Missing required fields: ${missing.join(", ")}` },
+        { status: 400 }
+      );
+    }
+
+    // Validate deadline is in the future
+    const deadline = new Date(applicationDeadline);
+    if (isNaN(deadline.getTime()) || deadline <= new Date()) {
+      return NextResponse.json(
+        { error: "Application deadline must be a valid future date" },
+        { status: 400 }
+      );
+    }
+
+    const post = await prisma.postRequirement.create({
+      data: {
+        advertisementNo,
+        title,
+        functionalRole,
+        domain,
+        engagementType,
+        numberOfPositions: numberOfPositions || 1,
+        placeOfDeployment,
+        minQualification,
+        minExperienceYears: parseInt(minExperienceYears, 10),
+        maxAgeLimitYears: maxAgeLimitYears ? parseInt(maxAgeLimitYears, 10) : null,
+        remunerationRange: remunerationRange || null,
+        contractPeriod: contractPeriod || null,
+        eligibilityCriteria,
+        workResponsibilities,
+        termsAndConditions: termsAndConditions || "",
+        applicationDeadline: deadline,
+        createdBy: session.userId,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Post requirement created successfully", post },
+      { status: 201 }
+    );
+  } catch (error: unknown) {
+    console.error("Create post error:", error);
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      (error as { code: string }).code === "P2002"
+    ) {
+      return NextResponse.json(
+        { error: "Advertisement number already exists" },
+        { status: 409 }
+      );
+    }
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
