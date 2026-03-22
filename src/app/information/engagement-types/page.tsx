@@ -47,10 +47,9 @@ const engagementTypes = [
     bg: "bg-teal-50",
     text: "text-teal-700",
     content: [
-      "For enhancing revenue generation, NPC may engage Advisors or Agencies on a revenue-sharing basis.",
-      "Engaged during the pre-consultancy phase and subsequent award of work order to NPC.",
-      "Success fee not exceeding 3% of the value of work.",
-      "Payment made only after receipt of payment by NPC from the client.",
+      "For reputed domain experts with minimum 15 years of relevant experience.",
+      "Engaged for bringing new assignments and projects to NPC through their expertise.",
+      "Remuneration is linked to successful completion and value of the engagement.",
     ],
   },
   {
@@ -126,48 +125,41 @@ export default function EngagementTypesPage() {
           })}
         </div>
 
-        {/* Selection Process */}
+        {/* Selection Process — Applicant perspective */}
         <div className="mt-16">
           <h2 className="flex items-center gap-2 text-2xl font-bold text-gray-900">
             <ClipboardCheck className="h-6 w-6 text-blue-600" />
-            Selection Process
+            What Happens After You Apply?
           </h2>
           <div className="mt-1 h-1 w-16 rounded bg-blue-600" />
 
-          {/* Full-time/Part-time selection */}
           <div className="mt-8">
-            <h3 className="text-lg font-semibold text-gray-900">
-              B.1 For Full-time / Part-time Engagement
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">
-              Standard Operating Procedure (SOP) as per Annex-I
-            </p>
             <div className="mt-4 space-y-4">
               {[
                 {
                   step: 1,
-                  title: "Requirement Raised",
-                  desc: "Group Head / Regional Director raises the requirement with full justification.",
+                  title: "Application Submitted",
+                  desc: "Your application is received and assigned a unique application number. You can track its status from your dashboard.",
                 },
                 {
                   step: 2,
-                  title: "Screening Committee",
-                  desc: "Committee formed with DG approval. Scrutinizes all applications, shortlists eligible candidates based on qualification and experience criteria.",
+                  title: "Screening",
+                  desc: "A Screening Committee reviews all applications and shortlists eligible candidates based on qualification and experience criteria as per the advertisement.",
                 },
                 {
                   step: 3,
-                  title: "Selection Committee",
-                  desc: "Constituted with DG approval. May conduct online or physical interaction with shortlisted candidates if needed.",
+                  title: "Selection / Interview",
+                  desc: "A Selection Committee may conduct online or physical interaction with shortlisted candidates to assess suitability.",
                 },
                 {
                   step: 4,
-                  title: "Recommendation",
-                  desc: "Selection Committee sends recommendation to DG, NPC for acceptance.",
+                  title: "Offer of Engagement",
+                  desc: "Selected candidates are issued an offer of engagement. You will be notified via email and your dashboard.",
                 },
                 {
                   step: 5,
-                  title: "Engagement Order",
-                  desc: "After DG approval and verification of original documents, the engagement order is issued.",
+                  title: "Document Verification & Joining",
+                  desc: "You must produce original documents and certificates in support of age, qualification and experience at the time of joining.",
                 },
               ].map((s) => (
                 <div key={s.step} className="flex gap-4">
@@ -180,30 +172,6 @@ export default function EngagementTypesPage() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Lump Sum / Revenue Sharing selection */}
-          <div className="mt-10">
-            <h3 className="text-lg font-semibold text-gray-900">
-              B.2 For Lump Sum / Revenue Sharing Engagement
-            </h3>
-            <div className="mt-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-              <ul className="space-y-3 text-sm text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500" />
-                  Proposed on a case-to-case basis by the Group Head / Regional
-                  Director concerned.
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500" />
-                  Must include full justifications and clear-cut benefits to NPC.
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500" />
-                  Requires due approval of the Director General, NPC.
-                </li>
-              </ul>
             </div>
           </div>
         </div>

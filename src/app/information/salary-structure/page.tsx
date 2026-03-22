@@ -457,20 +457,11 @@ export default function SalaryStructurePage() {
           </h2>
           <div className="mt-1 h-1 w-16 rounded bg-teal-600" />
           <div className="mt-4 rounded-lg border-l-4 border-teal-500 bg-white p-6 shadow-sm">
-            <ul className="space-y-3 text-sm text-gray-700">
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-teal-500" />
-                For reputed domain experts with minimum 15 years of experience
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-teal-500" />
-                Success fee not exceeding 3% of the value of work
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-teal-500" />
-                Payment made only after receipt of payment by NPC
-              </li>
-            </ul>
+            <p className="text-sm text-gray-700">
+              For reputed domain experts with minimum 15 years of relevant experience.
+              Remuneration is linked to the value and successful delivery of the engagement.
+              Details are shared with shortlisted candidates during the selection process.
+            </p>
           </div>
         </section>
 

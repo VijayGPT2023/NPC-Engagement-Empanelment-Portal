@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Shield, AlertCircle, Scale, Clock } from "lucide-react";
+import { ArrowLeft, Shield, AlertCircle, Clock } from "lucide-react";
 
 export const metadata = { title: "General Terms & Conditions - NPC Portal" };
 
@@ -75,16 +75,15 @@ export default function TermsConditionsPage() {
             <div className="rounded-lg border-t-4 border-blue-500 bg-white p-5 shadow-sm">
               <h3 className="font-semibold text-gray-900">Full-time</h3>
               <p className="mt-2 text-sm text-gray-600">
-                Reviewed annually by Group Head / Regional Director. Remuneration
-                may be increased as per the Annexure-II matrix after satisfactory
-                performance.
+                Performance reviewed annually. Remuneration may be increased as
+                per the remuneration matrix after satisfactory performance.
               </p>
             </div>
             <div className="rounded-lg border-t-4 border-orange-500 bg-white p-5 shadow-sm">
               <h3 className="font-semibold text-gray-900">Lump Sum</h3>
               <p className="mt-2 text-sm text-gray-600">
-                Reviewed quarterly by Group Head / Regional Director based on
-                milestone delivery and output quality.
+                Performance reviewed quarterly based on milestone delivery and
+                output quality.
               </p>
             </div>
             <div className="rounded-lg border-t-4 border-green-500 bg-white p-5 shadow-sm">
@@ -93,53 +92,6 @@ export default function TermsConditionsPage() {
                 12 days leave per year on pro-rata basis. No accumulation of
                 leave beyond the calendar year is allowed.
               </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Expenditure Limits */}
-        <section className="mt-14">
-          <h2 className="flex items-center gap-2 text-2xl font-bold text-gray-900">
-            <Scale className="h-6 w-6 text-amber-600" />
-            Expenditure Limits
-          </h2>
-          <div className="mt-1 h-1 w-16 rounded bg-amber-600" />
-
-          <div className="mt-6 space-y-4">
-            <div className="rounded-lg border border-amber-200 bg-amber-50 p-6">
-              <h3 className="font-semibold text-amber-900">
-                Consultancy Projects
-              </h3>
-              <p className="mt-2 text-sm text-gray-700">
-                Total expenditure on contractual persons in any consultancy project
-                shall not be more than <strong>30%</strong> of the total project
-                value at any point. If expenditure exceeds 30%, specific prior
-                approval of the Director General, NPC is required.
-              </p>
-            </div>
-
-            <div className="rounded-lg border border-amber-200 bg-amber-50 p-6">
-              <h3 className="font-semibold text-amber-900">
-                Training Programmes
-              </h3>
-              <p className="mt-2 text-sm text-gray-700">
-                Surplus generated (after all direct and attributable expenses
-                including honorarium) should not be less than:
-              </p>
-              <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-                <div className="flex-1 rounded-lg bg-white p-4 text-center">
-                  <p className="text-2xl font-bold text-amber-700">35%</p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    For Residential Programmes
-                  </p>
-                </div>
-                <div className="flex-1 rounded-lg bg-white p-4 text-center">
-                  <p className="text-2xl font-bold text-amber-700">55%</p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    For Non-residential / Online Programmes
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </section>
