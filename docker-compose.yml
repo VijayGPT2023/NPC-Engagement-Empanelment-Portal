@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://npc:npc_secret@postgres:5432/npc_portal
+      - TOKEN_SECRET=local-dev-secret-change-for-production-min-32-chars
+      - NODE_ENV=production
+      - UPLOAD_DIR=/app/uploads
+      - SMTP_HOST=mailhog
+      - SMTP_PORT=1025
+      - STORAGE_TYPE=local
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/uploads
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: npc
+      POSTGRES_PASSWORD: npc_secret
+      POSTGRES_DB: npc_portal
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U npc -d npc_portal"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:
