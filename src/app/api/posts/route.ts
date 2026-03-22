@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getSessionFromRequest } from "@/lib/auth";
+import { getCached, setCache, invalidateCache } from "@/lib/cache";
 
 // GET: List all active posts (public)
 export async function GET(request: NextRequest) {
@@ -12,6 +13,12 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = Math.min(parseInt(searchParams.get("limit") || "20", 10), 100);
     const skip = (page - 1) * limit;
+
+    const cacheKey = `posts:${status}:${domain || "all"}:${engagementType || "all"}:${page}:${limit}`;
+    const cached = await getCached(cacheKey);
+    if (cached) {
+      return NextResponse.json(cached);
+    }
 
     const where: Record<string, unknown> = { status };
     if (domain) where.domain = domain;
@@ -27,15 +34,9 @@ export async function GET(request: NextRequest) {
       prisma.postRequirement.count({ where }),
     ]);
 
-    return NextResponse.json({
-      posts,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-      },
-    });
+    const result = { posts, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } };
+    await setCache(cacheKey, result);
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Get posts error:", error);
     return NextResponse.json(
@@ -128,6 +129,8 @@ export async function POST(request: NextRequest) {
         createdBy: session.userId,
       },
     });
+
+    await invalidateCache("posts:");
 
     return NextResponse.json(
       { message: "Post requirement created successfully", post },

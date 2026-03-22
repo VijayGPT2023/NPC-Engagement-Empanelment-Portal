@@ -50,6 +50,7 @@ export default function Select({
         onChange={onChange}
         disabled={disabled}
         required={required}
+        aria-required={required}
         aria-invalid={!!error}
         aria-describedby={error ? `${name}-error` : undefined}
         className={`

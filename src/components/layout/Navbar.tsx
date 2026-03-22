@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ChevronDown, User, LogOut } from "lucide-react";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 interface NavUser {
   name: string;
@@ -73,6 +74,9 @@ export default function Navbar({ user }: NavbarProps) {
               </Link>
             ))}
           </nav>
+
+          {/* Language switcher */}
+          <LanguageSwitcher />
 
           {/* User menu */}
           {user && (

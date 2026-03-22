@@ -52,6 +52,7 @@ export default function TextArea({
         placeholder={placeholder}
         disabled={disabled}
         required={required}
+        aria-required={required}
         aria-invalid={!!error}
         aria-describedby={error ? `${name}-error` : undefined}
         className={`

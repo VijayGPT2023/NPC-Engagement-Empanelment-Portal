@@ -1,12 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getSessionFromRequest } from "@/lib/auth";
+import { getCached, setCache } from "@/lib/cache";
 
 export async function GET(request: NextRequest) {
   try {
     const session = getSessionFromRequest(request);
     if (!session || (session.role !== "admin" && session.role !== "dg")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const cacheKey = "admin:stats";
+    const cached = await getCached(cacheKey);
+    if (cached) {
+      return NextResponse.json(cached);
     }
 
     // ── Post counts ──────────────────────────────────────────────
@@ -198,7 +205,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({
+    const statsResult = {
       posts: {
         total: totalPosts,
         active: activePosts,
@@ -222,7 +229,10 @@ export async function GET(request: NextRequest) {
       postWise,
       recentActivity,
       empanelmentList: empanelmentApplications_list,
-    });
+    };
+
+    await setCache(cacheKey, statsResult, 2 * 60 * 1000); // 2 minutes TTL
+    return NextResponse.json(statsResult);
   } catch (error) {
     console.error("Admin stats error:", error);
     return NextResponse.json(

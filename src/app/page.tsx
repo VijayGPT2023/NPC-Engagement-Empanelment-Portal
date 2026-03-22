@@ -53,7 +53,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white">
+      <section role="banner" className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
           <div className="text-center">
             <div className="mb-3 inline-block rounded bg-white/10 px-4 py-1 text-sm font-medium tracking-wide text-blue-100">
@@ -79,12 +79,12 @@ export default function HomePage() {
       </section>
 
       {/* CTA Cards */}
-      <section className="-mt-10 relative z-10 mx-auto max-w-5xl px-4 sm:px-6">
+      <section aria-label="Application options" className="-mt-10 relative z-10 mx-auto max-w-5xl px-4 sm:px-6">
         <div className="grid gap-6 md:grid-cols-2">
           {/* Apply for Engagement */}
-          <div className="rounded-lg border border-gray-200 bg-white p-8 shadow-lg transition-shadow hover:shadow-xl">
+          <div className="rounded-lg border border-gray-200 bg-white p-8 shadow-lg transition-shadow hover:shadow-xl" aria-label="Apply for Contractual Engagement">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-blue-100 text-blue-800">
-              <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
@@ -104,9 +104,9 @@ export default function HomePage() {
           </div>
 
           {/* Apply for Empanelment */}
-          <div className="rounded-lg border border-gray-200 bg-white p-8 shadow-lg transition-shadow hover:shadow-xl">
+          <div className="rounded-lg border border-gray-200 bg-white p-8 shadow-lg transition-shadow hover:shadow-xl" aria-label="Apply for Empanelment">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-blue-100 text-blue-800">
-              <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
@@ -128,7 +128,7 @@ export default function HomePage() {
       </section>
 
       {/* Current Openings */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+      <section role="navigation" aria-label="Current Openings" className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Current Openings
@@ -156,6 +156,7 @@ export default function HomePage() {
                 <div
                   key={post.id}
                   className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+                  aria-label={`Opening: ${post.title} at ${post.placeOfDeployment}`}
                 >
                   <h3 className="text-lg font-semibold text-gray-900">
                     {post.title}
@@ -247,7 +248,7 @@ export default function HomePage() {
                 className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm"
               >
                 <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-800">
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
