@@ -23,6 +23,9 @@ const statusColors: Record<string, string> = {
   empanelled: "bg-teal-50 text-teal-700 border-teal-200",
   expired: "bg-gray-100 text-gray-500 border-gray-200",
   cancelled: "bg-red-100 text-red-600 border-red-300",
+  active: "bg-green-50 text-green-700 border-green-200",
+  on_hold: "bg-yellow-50 text-yellow-700 border-yellow-200",
+  closed: "bg-gray-100 text-gray-500 border-gray-200",
 };
 
 const sizeClasses: Record<BadgeSize, string> = {
