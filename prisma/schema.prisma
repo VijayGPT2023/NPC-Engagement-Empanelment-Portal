@@ -106,22 +106,45 @@ model ProfileExperience {
 model PostRequirement {
   id                    String   @id @default(uuid())
   advertisementNo       String   @unique
+  postCode              String?  // Post code within advertisement e.g. Adv/01, Adv/02
   title                 String
   functionalRole        String   // Designation from Annex-II-A/B
   domain                String   // AB, ES, ECA, EM, HRM, IE, IT, FIN, ADM, ID, IS
+  groupDivisionName     String?  // Human-readable e.g. "HRM Group at NPC, HQ, New Delhi"
   engagementType        String   // full_time | part_time | lump_sum | revenue_sharing | resource_person
   numberOfPositions     Int      @default(1)
-  placeOfDeployment     String   // NPC office
-  minQualification      String
+  placeOfDeployment     String   // NPC office code
+
+  // ─── Qualification (structured) ──────────────────────────────
+  minQualification      String   // Mandatory qualification (degree + discipline)
+  desiredQualification  String?  // Preferred/additional qualification ("Master's degree will be preferred")
+  professionalCertification String? // Required certifications (CA, Six Sigma, BEE, etc.)
+
+  // ─── Experience (structured) ─────────────────────────────────
   minExperienceYears    Int
+  experienceDescription String?  // Detailed description of required experience type/domain
+  preferredExperience   String?  // Preferred additional experience ("ISS cadre Level-14 & above preferred")
+
+  // ─── Age & Relaxation ────────────────────────────────────────
   maxAgeLimitYears      Int?
+  ageRelaxation         String?  // "As per Govt of India norms for SC/ST/OBC/PwD/Ex-Servicemen"
+
+  // ─── Remuneration & Contract ─────────────────────────────────
   remunerationRange     String?
   contractPeriod        String?
-  eligibilityCriteria   String   // detailed text
+
+  // ─── Detailed Criteria ───────────────────────────────────────
+  eligibilityCriteria   String   // Full eligibility text (legacy/combined field)
   workResponsibilities  String
   termsAndConditions    String   @default("")
+
+  // ─── Application Process ─────────────────────────────────────
   applicationDeadline   DateTime
-  status                String   @default("active") // active | closed | cancelled
+  applicationInstructions String? // How to apply, what documents to attach, email for submission
+  annexureFormRef       String?  // Reference to form e.g. "Annex-AF", "Annex-II-A"
+
+  // ─── Status & Metadata ───────────────────────────────────────
+  status                String   @default("active") // active | on_hold | closed | cancelled
   createdBy             String
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt

@@ -76,6 +76,23 @@ export async function POST(request: NextRequest) {
       "terms": "termsAndConditions",
       "application deadline": "applicationDeadline",
       "deadline": "applicationDeadline",
+      "post code": "postCode",
+      "post_code": "postCode",
+      "group": "groupDivisionName",
+      "group name": "groupDivisionName",
+      "division": "groupDivisionName",
+      "desired qualification": "desiredQualification",
+      "preferred qualification": "desiredQualification",
+      "professional certification": "professionalCertification",
+      "certification": "professionalCertification",
+      "experience description": "experienceDescription",
+      "experience details": "experienceDescription",
+      "preferred experience": "preferredExperience",
+      "age relaxation": "ageRelaxation",
+      "application instructions": "applicationInstructions",
+      "instructions": "applicationInstructions",
+      "annexure": "annexureFormRef",
+      "form reference": "annexureFormRef",
     };
 
     // Normalize row keys
@@ -157,23 +174,43 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
+        // Extract optional new fields
+        const postCode = raw.postCode ? String(raw.postCode).trim() : null;
+        const groupDivisionName = raw.groupDivisionName ? String(raw.groupDivisionName).trim() : null;
+        const desiredQualification = raw.desiredQualification ? String(raw.desiredQualification).trim() : null;
+        const professionalCertification = raw.professionalCertification ? String(raw.professionalCertification).trim() : null;
+        const experienceDescription = raw.experienceDescription ? String(raw.experienceDescription).trim() : null;
+        const preferredExperience = raw.preferredExperience ? String(raw.preferredExperience).trim() : null;
+        const ageRelaxation = raw.ageRelaxation ? String(raw.ageRelaxation).trim() : null;
+        const applicationInstructions = raw.applicationInstructions ? String(raw.applicationInstructions).trim() : null;
+        const annexureFormRef = raw.annexureFormRef ? String(raw.annexureFormRef).trim() : null;
+
         await prisma.postRequirement.create({
           data: {
             advertisementNo: advNo,
+            postCode,
             title,
             functionalRole,
             domain,
+            groupDivisionName,
             engagementType,
             numberOfPositions,
             placeOfDeployment,
             minQualification,
+            desiredQualification,
+            professionalCertification,
             minExperienceYears,
+            experienceDescription,
+            preferredExperience,
             maxAgeLimitYears: maxAge,
+            ageRelaxation,
             remunerationRange,
             contractPeriod,
             eligibilityCriteria,
             workResponsibilities,
             termsAndConditions,
+            applicationInstructions,
+            annexureFormRef,
             applicationDeadline,
             createdBy: session.userId,
           },

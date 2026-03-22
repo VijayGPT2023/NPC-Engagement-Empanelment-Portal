@@ -1,0 +1,162 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "National Productivity Council NPC Engagement & Empanelment Portal" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e7]: National Productivity Council
+        - generic [ref=e8]: NPC Engagement & Empanelment Portal
+      - generic [ref=e9]:
+        - button "Switch to Hindi" [ref=e10]:
+          - generic [ref=e11]: अ
+          - generic [ref=e12]: हिंदी
+        - link "Sign In" [ref=e13] [cursor=pointer]:
+          - /url: /auth/login
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - banner [ref=e16]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: Government of India
+          - heading "National Productivity Council" [level=1] [ref=e20]
+          - paragraph [ref=e21]: Under DPIIT, Ministry of Commerce & Industry, Government of India
+          - heading "NPC Contractual Engagement & Empanelment Portal" [level=2] [ref=e23]
+          - paragraph [ref=e24]: Apply for contractual positions and expert empanelment at the National Productivity Council
+      - region "Application options" [ref=e25]:
+        - generic [ref=e26]:
+          - generic "Apply for Contractual Engagement" [ref=e27]:
+            - img [ref=e29]
+            - heading "Apply for Engagement" [level=3] [ref=e31]
+            - paragraph [ref=e32]: Apply for advertised contractual positions at NPC offices across India
+            - link "Apply for Engagement" [ref=e33] [cursor=pointer]:
+              - /url: /apply/engagement
+              - button "Apply for Engagement" [ref=e34]
+          - generic "Apply for Empanelment" [ref=e35]:
+            - img [ref=e37]
+            - heading "Apply for Empanelment" [level=3] [ref=e39]
+            - paragraph [ref=e40]: Register as an external expert or associate consultant with NPC
+            - link "Apply for Empanelment" [ref=e41] [cursor=pointer]:
+              - /url: /apply/empanelment
+              - button "Apply for Empanelment" [ref=e42]
+      - navigation "Current Openings" [ref=e43]:
+        - generic [ref=e44]:
+          - heading "Current Openings" [level=2] [ref=e45]
+          - paragraph [ref=e46]: Browse active contractual positions at NPC
+        - generic [ref=e50]: Loading...
+      - generic [ref=e52]:
+        - heading "About National Productivity Council" [level=2] [ref=e54]
+        - paragraph [ref=e57]: The National Productivity Council (NPC) is an autonomous body established in 1958 under the Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of Commerce & Industry, Government of India.
+      - generic [ref=e59]:
+        - generic [ref=e60]:
+          - heading "NPC Offices Across India" [level=2] [ref=e61]
+          - paragraph [ref=e62]: Headquarters and 12 Regional Directorates across India
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - img [ref=e66]
+            - generic [ref=e69]:
+              - paragraph [ref=e70]: New Delhi
+              - paragraph [ref=e71]: Headquarters
+          - generic [ref=e72]:
+            - img [ref=e74]
+            - generic [ref=e77]:
+              - paragraph [ref=e78]: Bengaluru
+              - paragraph [ref=e79]: Regional Directorate
+          - generic [ref=e80]:
+            - img [ref=e82]
+            - generic [ref=e85]:
+              - paragraph [ref=e86]: Bhubaneswar
+              - paragraph [ref=e87]: Regional Directorate
+          - generic [ref=e88]:
+            - img [ref=e90]
+            - generic [ref=e93]:
+              - paragraph [ref=e94]: Chandigarh
+              - paragraph [ref=e95]: Regional Directorate
+          - generic [ref=e96]:
+            - img [ref=e98]
+            - generic [ref=e101]:
+              - paragraph [ref=e102]: Chennai
+              - paragraph [ref=e103]: Regional Directorate
+          - generic [ref=e104]:
+            - img [ref=e106]
+            - generic [ref=e109]:
+              - paragraph [ref=e110]: Gandhinagar
+              - paragraph [ref=e111]: Regional Directorate
+          - generic [ref=e112]:
+            - img [ref=e114]
+            - generic [ref=e117]:
+              - paragraph [ref=e118]: Guwahati
+              - paragraph [ref=e119]: Regional Directorate
+          - generic [ref=e120]:
+            - img [ref=e122]
+            - generic [ref=e125]:
+              - paragraph [ref=e126]: Hyderabad
+              - paragraph [ref=e127]: Regional Directorate
+          - generic [ref=e128]:
+            - img [ref=e130]
+            - generic [ref=e133]:
+              - paragraph [ref=e134]: Jaipur
+              - paragraph [ref=e135]: Regional Directorate
+          - generic [ref=e136]:
+            - img [ref=e138]
+            - generic [ref=e141]:
+              - paragraph [ref=e142]: Kanpur
+              - paragraph [ref=e143]: Regional Directorate
+          - generic [ref=e144]:
+            - img [ref=e146]
+            - generic [ref=e149]:
+              - paragraph [ref=e150]: Kolkata
+              - paragraph [ref=e151]: Regional Directorate
+          - generic [ref=e152]:
+            - img [ref=e154]
+            - generic [ref=e157]:
+              - paragraph [ref=e158]: Mumbai
+              - paragraph [ref=e159]: Regional Directorate
+          - generic [ref=e160]:
+            - img [ref=e162]
+            - generic [ref=e165]:
+              - paragraph [ref=e166]: Patna
+              - paragraph [ref=e167]: Regional Directorate
+      - generic [ref=e169]:
+        - generic [ref=e170]:
+          - generic [ref=e171]:
+            - heading "National Productivity Council" [level=3] [ref=e172]
+            - paragraph [ref=e173]:
+              - text: Under DPIIT, Ministry of Commerce & Industry
+              - text: Government of India
+            - generic [ref=e174]:
+              - text: Utpadakta Bhawan, 5-6, Institutional Area
+              - text: Lodhi Road, New Delhi - 110003
+              - text: "Phone: 011-24690331"
+          - generic [ref=e175]:
+            - heading "Quick Links" [level=4] [ref=e176]
+            - list [ref=e177]:
+              - listitem [ref=e178]:
+                - link "Apply for Engagement" [ref=e179] [cursor=pointer]:
+                  - /url: /apply/engagement
+              - listitem [ref=e180]:
+                - link "Apply for Empanelment" [ref=e181] [cursor=pointer]:
+                  - /url: /apply/empanelment
+              - listitem [ref=e182]:
+                - link "Sign In" [ref=e183] [cursor=pointer]:
+                  - /url: /auth/login
+              - listitem [ref=e184]:
+                - link "Register" [ref=e185] [cursor=pointer]:
+                  - /url: /auth/register
+          - generic [ref=e186]:
+            - heading "Important Links" [level=4] [ref=e187]
+            - list [ref=e188]:
+              - listitem [ref=e189]:
+                - link "NPC Website" [ref=e190] [cursor=pointer]:
+                  - /url: https://www.npcindia.gov.in
+              - listitem [ref=e191]:
+                - link "DPIIT Website" [ref=e192] [cursor=pointer]:
+                  - /url: https://dpiit.gov.in
+              - listitem [ref=e193]:
+                - link "India.gov.in" [ref=e194] [cursor=pointer]:
+                  - /url: https://www.india.gov.in
+        - generic [ref=e195]: © 2026 National Productivity Council. All rights reserved.
+  - alert [ref=e196]
+```

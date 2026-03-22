@@ -26,20 +26,29 @@ const STANDARD_TNC = `1. The engagement is purely on contractual basis and does 
 
 interface FormData {
   advertisementNo: string;
+  postCode: string;
   title: string;
   functionalRole: string;
   domain: string;
+  groupDivisionName: string;
   engagementType: string;
   numberOfPositions: string;
   placeOfDeployment: string;
   minQualification: string;
+  desiredQualification: string;
+  professionalCertification: string;
   minExperienceYears: string;
+  experienceDescription: string;
+  preferredExperience: string;
   maxAgeLimitYears: string;
+  ageRelaxation: string;
   remunerationRange: string;
   contractPeriod: string;
   eligibilityCriteria: string;
   workResponsibilities: string;
   termsAndConditions: string;
+  applicationInstructions: string;
+  annexureFormRef: string;
   applicationDeadline: string;
 }
 
@@ -50,20 +59,29 @@ export default function CreateEditPost() {
 
   const [form, setForm] = useState<FormData>({
     advertisementNo: "",
+    postCode: "",
     title: "",
     functionalRole: "",
     domain: "",
+    groupDivisionName: "",
     engagementType: "",
     numberOfPositions: "1",
     placeOfDeployment: "",
     minQualification: "",
+    desiredQualification: "",
+    professionalCertification: "",
     minExperienceYears: "0",
+    experienceDescription: "",
+    preferredExperience: "",
     maxAgeLimitYears: "",
+    ageRelaxation: "As per Government of India norms",
     remunerationRange: "",
     contractPeriod: "",
     eligibilityCriteria: "",
     workResponsibilities: "",
     termsAndConditions: STANDARD_TNC,
+    applicationInstructions: "",
+    annexureFormRef: "",
     applicationDeadline: "",
   });
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
@@ -85,22 +103,31 @@ export default function CreateEditPost() {
         const post = data.post;
         setForm({
           advertisementNo: post.advertisementNo || "",
+          postCode: post.postCode || "",
           title: post.title || "",
           functionalRole: post.functionalRole || "",
           domain: post.domain || "",
+          groupDivisionName: post.groupDivisionName || "",
           engagementType: post.engagementType || "",
           numberOfPositions: String(post.numberOfPositions || 1),
           placeOfDeployment: post.placeOfDeployment || "",
           minQualification: post.minQualification || "",
+          desiredQualification: post.desiredQualification || "",
+          professionalCertification: post.professionalCertification || "",
           minExperienceYears: String(post.minExperienceYears ?? 0),
+          experienceDescription: post.experienceDescription || "",
+          preferredExperience: post.preferredExperience || "",
           maxAgeLimitYears: post.maxAgeLimitYears
             ? String(post.maxAgeLimitYears)
             : "",
+          ageRelaxation: post.ageRelaxation || "As per Government of India norms",
           remunerationRange: post.remunerationRange || "",
           contractPeriod: post.contractPeriod || "",
           eligibilityCriteria: post.eligibilityCriteria || "",
           workResponsibilities: post.workResponsibilities || "",
           termsAndConditions: post.termsAndConditions || STANDARD_TNC,
+          applicationInstructions: post.applicationInstructions || "",
+          annexureFormRef: post.annexureFormRef || "",
           applicationDeadline: post.applicationDeadline
             ? new Date(post.applicationDeadline).toISOString().split("T")[0]
             : "",
@@ -308,6 +335,13 @@ export default function CreateEditPost() {
               placeholder="e.g., NPC/2026/01"
             />
             <Input
+              label="Post Code"
+              name="postCode"
+              value={form.postCode}
+              onChange={handleChange}
+              placeholder="e.g. Adv/01"
+            />
+            <Input
               label="Title"
               name="title"
               value={form.title}
@@ -335,6 +369,13 @@ export default function CreateEditPost() {
               error={errors.domain}
               required
               placeholder="Select domain"
+            />
+            <Input
+              label="Group/Division Name"
+              name="groupDivisionName"
+              value={form.groupDivisionName}
+              onChange={handleChange}
+              placeholder="e.g. HRM Group at NPC, HQ, New Delhi"
             />
             <Select
               label="Engagement Type"
@@ -390,6 +431,23 @@ export default function CreateEditPost() {
                 placeholder="Auto-filled from selected designation"
               />
             </div>
+            <div className="sm:col-span-2">
+              <TextArea
+                label="Desired/Preferred Qualification"
+                name="desiredQualification"
+                value={form.desiredQualification}
+                onChange={handleChange}
+                rows={2}
+                placeholder="Additional preferred qualifications..."
+              />
+            </div>
+            <Input
+              label="Professional Certification"
+              name="professionalCertification"
+              value={form.professionalCertification}
+              onChange={handleChange}
+              placeholder="e.g. Six Sigma Black Belt, CA, BEE Certified"
+            />
             <Input
               label="Minimum Experience (Years)"
               name="minExperienceYears"
@@ -398,6 +456,26 @@ export default function CreateEditPost() {
               onChange={handleChange}
               placeholder="0"
             />
+            <div className="sm:col-span-2">
+              <TextArea
+                label="Experience Description"
+                name="experienceDescription"
+                value={form.experienceDescription}
+                onChange={handleChange}
+                rows={2}
+                placeholder="Detailed description of required experience type, domain expertise..."
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <TextArea
+                label="Preferred Experience"
+                name="preferredExperience"
+                value={form.preferredExperience}
+                onChange={handleChange}
+                rows={2}
+                placeholder="Additional preferred experience e.g. ISS cadre Level-14 & above..."
+              />
+            </div>
             <Input
               label="Max Age Limit (Years)"
               name="maxAgeLimitYears"
@@ -405,6 +483,13 @@ export default function CreateEditPost() {
               value={form.maxAgeLimitYears}
               onChange={handleChange}
               placeholder="e.g., 65"
+            />
+            <Input
+              label="Age Relaxation"
+              name="ageRelaxation"
+              value={form.ageRelaxation}
+              onChange={handleChange}
+              placeholder="e.g. As per GoI norms for SC/ST/OBC/PwD/Ex-Servicemen"
             />
             <Input
               label="Remuneration Range"
@@ -452,6 +537,21 @@ export default function CreateEditPost() {
               onChange={handleChange}
               rows={8}
               placeholder="Pre-filled with standard T&C from AI 858"
+            />
+            <TextArea
+              label="Application Instructions"
+              name="applicationInstructions"
+              value={form.applicationInstructions}
+              onChange={handleChange}
+              rows={3}
+              placeholder="How to apply, documents to attach, email for submission..."
+            />
+            <Input
+              label="Annexure/Form Reference"
+              name="annexureFormRef"
+              value={form.annexureFormRef}
+              onChange={handleChange}
+              placeholder="e.g. Annex-AF"
             />
           </div>
         </Card>

@@ -14,6 +14,8 @@ interface Post {
   placeOfDeployment: string;
   applicationDeadline: string;
   numberOfPositions: number;
+  desiredQualification?: string | null;
+  professionalCertification?: string | null;
 }
 
 const npcOffices = [
@@ -174,6 +176,18 @@ export default function HomePage() {
                       <span className="font-medium text-gray-700">{t("home.positions")}:</span>{" "}
                       {post.numberOfPositions}
                     </p>
+                    {post.desiredQualification && (
+                      <p>
+                        <span className="font-medium text-gray-700">Preferred Qualification:</span>{" "}
+                        {post.desiredQualification}
+                      </p>
+                    )}
+                    {post.professionalCertification && (
+                      <p>
+                        <span className="font-medium text-gray-700">Certification:</span>{" "}
+                        {post.professionalCertification}
+                      </p>
+                    )}
                     <p>
                       <span className="font-medium text-gray-700">{t("home.deadline")}:</span>{" "}
                       <span className="text-red-600 font-medium">
