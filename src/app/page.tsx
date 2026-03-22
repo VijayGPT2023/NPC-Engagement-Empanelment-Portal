@@ -125,6 +125,45 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Information Hub Quick Links */}
+      <section aria-label="Information Hub" className="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+            Information &amp; Resources
+          </h2>
+          <p className="mt-2 text-gray-600">
+            Quick access to guides, salary details, and application resources
+          </p>
+        </div>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { href: "/information/how-to-apply", title: "How to Apply", desc: "Step-by-step guide", border: "border-blue-500", bg: "bg-blue-50", iconColor: "text-blue-600", icon: "M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+            { href: "/information/salary-structure", title: "Salary Structure", desc: "Remuneration matrix", border: "border-purple-500", bg: "bg-purple-50", iconColor: "text-purple-600", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+            { href: "/information/documents-required", title: "Documents Required", desc: "Complete checklist", border: "border-green-500", bg: "bg-green-50", iconColor: "text-green-600", icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" },
+            { href: "/information/empanelment-guide", title: "Empanelment Guide", desc: "Categories & process", border: "border-teal-500", bg: "bg-teal-50", iconColor: "text-teal-600", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" },
+          ].map((card) => (
+            <Link key={card.href} href={card.href}>
+              <div className={`group flex items-center gap-4 rounded-lg border-l-4 ${card.border} bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md`}>
+                <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${card.bg}`}>
+                  <svg className={`h-5 w-5 ${card.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={card.icon} />
+                  </svg>
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 group-hover:text-blue-700">{card.title}</p>
+                  <p className="text-xs text-gray-500">{card.desc}</p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-6 text-center">
+          <Link href="/information" className="text-sm font-medium text-blue-700 hover:text-blue-900 hover:underline">
+            View all information &amp; resources &rarr;
+          </Link>
+        </div>
+      </section>
+
       {/* Current Openings */}
       <section role="navigation" aria-label="Current Openings" className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="text-center">
@@ -266,7 +305,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-blue-900 text-blue-100">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-4">
             <div>
               <h3 className="text-lg font-bold text-white">
                 {t("common.orgName")}
@@ -307,6 +346,38 @@ export default function HomePage() {
                 <li>
                   <Link href="/auth/register" className="hover:text-white transition-colors">
                     {t("common.register")}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-white">
+                Information
+              </h4>
+              <ul className="mt-3 space-y-2 text-sm">
+                <li>
+                  <Link href="/information/how-to-apply" className="hover:text-white transition-colors">
+                    How to Apply
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/information/salary-structure" className="hover:text-white transition-colors">
+                    Salary Structure
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/information/documents-required" className="hover:text-white transition-colors">
+                    Documents Required
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/information/empanelment-guide" className="hover:text-white transition-colors">
+                    Empanelment Guide
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/information/terms-conditions" className="hover:text-white transition-colors">
+                    Terms &amp; Conditions
                   </Link>
                 </li>
               </ul>

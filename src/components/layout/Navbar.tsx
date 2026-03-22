@@ -66,6 +66,12 @@ export default function Navbar({ user }: NavbarProps) {
         <div className="flex items-center gap-6">
           {/* Navigation links */}
           <nav className="hidden items-center gap-1 md:flex" aria-label="Main navigation">
+            <Link
+              href="/information"
+              className="rounded px-3 py-2 text-sm font-medium text-blue-100 transition-colors hover:bg-blue-800 hover:text-white"
+            >
+              Information
+            </Link>
             {links.map((link) => (
               <Link
                 key={link.href}
