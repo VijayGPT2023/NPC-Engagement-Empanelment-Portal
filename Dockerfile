@@ -44,6 +44,10 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 
+# Copy startup script
+COPY --chown=nextjs:nodejs start.sh ./start.sh
+RUN chmod +x ./start.sh
+
 # Create uploads directory
 RUN mkdir -p /app/uploads && chown nextjs:nodejs /app/uploads
 
@@ -54,7 +58,7 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
   CMD curl -f http://localhost:3000/api/health || exit 1
 
-CMD ["node", "server.js"]
+CMD ["./start.sh"]
