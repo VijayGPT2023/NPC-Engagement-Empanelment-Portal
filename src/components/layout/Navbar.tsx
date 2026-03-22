@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ChevronDown, User, LogOut } from "lucide-react";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+import { useTranslation } from "@/i18n";
 
 interface NavUser {
   name: string;
@@ -30,6 +31,7 @@ const roleLinks: Record<string, { href: string; label: string }[]> = {
 };
 
 export default function Navbar({ user }: NavbarProps) {
+  const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -52,10 +54,10 @@ export default function Navbar({ user }: NavbarProps) {
         <div className="flex items-center gap-3">
           <Link href="/" className="flex flex-col leading-tight">
             <span className="text-base font-bold tracking-wide text-white">
-              National Productivity Council
+              {t("common.orgName")}
             </span>
             <span className="text-xs text-blue-200">
-              Contractual Engagement &amp; Empanelment Portal
+              {t("common.appName")}
             </span>
           </Link>
         </div>
@@ -109,7 +111,7 @@ export default function Navbar({ user }: NavbarProps) {
                     className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                   >
                     <User className="h-4 w-4" />
-                    Profile
+                    {t("common.profile")}
                   </Link>
                   <Link
                     href="/auth/logout"
@@ -117,7 +119,7 @@ export default function Navbar({ user }: NavbarProps) {
                     className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
                   >
                     <LogOut className="h-4 w-4" />
-                    Logout
+                    {t("common.logout")}
                   </Link>
                 </div>
               )}
@@ -129,7 +131,7 @@ export default function Navbar({ user }: NavbarProps) {
               href="/auth/login"
               className="rounded bg-white px-4 py-2 text-sm font-medium text-blue-900 transition-colors hover:bg-blue-50"
             >
-              Sign In
+              {t("common.login")}
             </Link>
           )}
         </div>

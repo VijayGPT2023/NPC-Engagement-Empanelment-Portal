@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import { useTranslation } from "@/i18n";
 
 interface Post {
   id: string;
@@ -32,6 +33,7 @@ const npcOffices = [
 ];
 
 export default function HomePage() {
+  const { t } = useTranslation();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -60,19 +62,17 @@ export default function HomePage() {
               Government of India
             </div>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-              National Productivity Council
+              {t("common.orgName")}
             </h1>
             <p className="mt-2 text-base text-blue-200 sm:text-lg">
               Under DPIIT, Ministry of Commerce &amp; Industry, Government of India
             </p>
             <div className="mx-auto mt-6 h-1 w-24 rounded bg-yellow-400" />
             <h2 className="mt-6 text-xl font-semibold sm:text-2xl lg:text-3xl">
-              Contractual Engagement &amp; Empanelment Portal
+              {t("home.heroTitle")}
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-blue-100">
-              A unified platform for professionals seeking contractual engagement
-              and empanelment opportunities with the National Productivity
-              Council.
+              {t("home.heroSubtitle")}
             </p>
           </div>
         </div>
@@ -89,16 +89,14 @@ export default function HomePage() {
               </svg>
             </div>
             <h3 className="text-xl font-bold text-gray-900">
-              Apply for Engagement
+              {t("home.engagementTitle")}
             </h3>
             <p className="mt-2 text-sm text-gray-600">
-              For contractual positions against advertised posts. Browse current
-              openings and apply for positions matching your qualifications and
-              experience.
+              {t("home.engagementDesc")}
             </p>
             <Link href="/apply/engagement">
               <Button variant="primary" size="lg" className="mt-6 w-full">
-                Apply for Engagement
+                {t("home.engagementTitle")}
               </Button>
             </Link>
           </div>
@@ -111,16 +109,14 @@ export default function HomePage() {
               </svg>
             </div>
             <h3 className="text-xl font-bold text-gray-900">
-              Apply for Empanelment
+              {t("home.empanelmentTitle")}
             </h3>
             <p className="mt-2 text-sm text-gray-600">
-              For empanelment as an external expert or associate consultant.
-              Register your expertise to be considered for NPC projects and
-              consultancy assignments.
+              {t("home.empanelmentDesc")}
             </p>
             <Link href="/apply/empanelment">
               <Button variant="outline" size="lg" className="mt-6 w-full">
-                Apply for Empanelment
+                {t("home.empanelmentTitle")}
               </Button>
             </Link>
           </div>
@@ -131,7 +127,7 @@ export default function HomePage() {
       <section role="navigation" aria-label="Current Openings" className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-            Current Openings
+            {t("home.currentOpenings")}
           </h2>
           <p className="mt-2 text-gray-600">
             Browse active contractual positions at NPC
@@ -142,12 +138,12 @@ export default function HomePage() {
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-200 border-t-blue-700" />
-              <span className="ml-3 text-gray-500">Loading openings...</span>
+              <span className="ml-3 text-gray-500">{t("common.loading")}</span>
             </div>
           ) : posts.length === 0 ? (
             <Card className="mx-auto max-w-lg text-center">
               <p className="text-gray-500">
-                No active openings at the moment. Please check back later.
+                {t("home.noOpenings")}
               </p>
             </Card>
           ) : (
@@ -175,11 +171,11 @@ export default function HomePage() {
                       {post.placeOfDeployment}
                     </p>
                     <p>
-                      <span className="font-medium text-gray-700">Positions:</span>{" "}
+                      <span className="font-medium text-gray-700">{t("home.positions")}:</span>{" "}
                       {post.numberOfPositions}
                     </p>
                     <p>
-                      <span className="font-medium text-gray-700">Deadline:</span>{" "}
+                      <span className="font-medium text-gray-700">{t("home.deadline")}:</span>{" "}
                       <span className="text-red-600 font-medium">
                         {new Date(post.applicationDeadline).toLocaleDateString("en-IN", {
                           day: "2-digit",
@@ -191,7 +187,7 @@ export default function HomePage() {
                   </div>
                   <Link href="/apply/engagement">
                     <Button variant="primary" size="sm" className="mt-4 w-full">
-                      Apply Now
+                      {t("home.viewDetails")}
                     </Button>
                   </Link>
                 </div>
@@ -206,25 +202,13 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-              About National Productivity Council
+              {t("home.aboutNpc")}
             </h2>
             <div className="mx-auto mt-2 h-1 w-16 rounded bg-blue-700" />
           </div>
           <div className="mx-auto mt-8 max-w-3xl text-center text-gray-600 leading-relaxed">
             <p>
-              The National Productivity Council (NPC) is an autonomous body
-              established in 1958 under the Department for Promotion of Industry
-              and Internal Trade (DPIIT), Ministry of Commerce &amp; Industry,
-              Government of India. NPC is a constituent of the Tokyo-based Asian
-              Productivity Organization (APO), an intergovernmental body of which
-              the Government of India is a founding member.
-            </p>
-            <p className="mt-4">
-              NPC provides consultancy and training services to the Government,
-              public and private sector organizations in areas including
-              productivity, quality, energy management, environmental management,
-              economic services, agribusiness, information technology, and human
-              resources development.
+              {t("home.aboutNpcText")}
             </p>
           </div>
         </div>
@@ -235,7 +219,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-              NPC Offices
+              {t("home.npcOffices")}
             </h2>
             <p className="mt-2 text-gray-600">
               Headquarters and 12 Regional Directorates across India
@@ -271,7 +255,7 @@ export default function HomePage() {
           <div className="grid gap-8 md:grid-cols-3">
             <div>
               <h3 className="text-lg font-bold text-white">
-                National Productivity Council
+                {t("common.orgName")}
               </h3>
               <p className="mt-2 text-sm text-blue-200">
                 Under DPIIT, Ministry of Commerce &amp; Industry
@@ -288,34 +272,34 @@ export default function HomePage() {
             </div>
             <div>
               <h4 className="text-sm font-semibold uppercase tracking-wider text-white">
-                Quick Links
+                {t("footer.quickLinks")}
               </h4>
               <ul className="mt-3 space-y-2 text-sm">
                 <li>
                   <Link href="/apply/engagement" className="hover:text-white transition-colors">
-                    Apply for Engagement
+                    {t("home.engagementTitle")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/apply/empanelment" className="hover:text-white transition-colors">
-                    Apply for Empanelment
+                    {t("home.empanelmentTitle")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/auth/login" className="hover:text-white transition-colors">
-                    Sign In
+                    {t("common.login")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/auth/register" className="hover:text-white transition-colors">
-                    Register
+                    {t("common.register")}
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
               <h4 className="text-sm font-semibold uppercase tracking-wider text-white">
-                Important Links
+                {t("footer.importantLinks")}
               </h4>
               <ul className="mt-3 space-y-2 text-sm">
                 <li>
@@ -325,7 +309,7 @@ export default function HomePage() {
                     rel="noopener noreferrer"
                     className="hover:text-white transition-colors"
                   >
-                    NPC Official Website
+                    {t("footer.npcWebsite")}
                   </a>
                 </li>
                 <li>
@@ -335,7 +319,7 @@ export default function HomePage() {
                     rel="noopener noreferrer"
                     className="hover:text-white transition-colors"
                   >
-                    DPIIT
+                    {t("footer.dpiitWebsite")}
                   </a>
                 </li>
                 <li>
@@ -345,15 +329,14 @@ export default function HomePage() {
                     rel="noopener noreferrer"
                     className="hover:text-white transition-colors"
                   >
-                    Government of India
+                    {t("footer.indiaGov")}
                   </a>
                 </li>
               </ul>
             </div>
           </div>
           <div className="mt-8 border-t border-blue-800 pt-6 text-center text-xs text-blue-300">
-            &copy; {new Date().getFullYear()} National Productivity Council. All
-            rights reserved.
+            {t("footer.copyright")}
           </div>
         </div>
       </footer>
