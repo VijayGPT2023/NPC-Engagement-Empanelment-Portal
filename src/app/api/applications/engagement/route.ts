@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getSessionFromRequest } from "@/lib/auth";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 // Generate application number like NPC/ENG/2026/0001
 async function generateEngagementAppNo(): Promise<string> {
@@ -34,7 +35,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get("status");
     const postId = searchParams.get("postId");
     const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "20", 10);
+    const limit = Math.min(parseInt(searchParams.get("limit") || "20", 10), 100);
     const skip = (page - 1) * limit;
 
     const where: Record<string, unknown> = {};
@@ -103,6 +104,19 @@ export async function GET(request: NextRequest) {
 // POST: Submit new engagement application
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip =
+      request.headers.get("x-forwarded-for") ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    const { success } = checkRateLimit(`submit-engagement:${ip}`, RATE_LIMITS.submit);
+    if (!success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const session = getSessionFromRequest(request);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

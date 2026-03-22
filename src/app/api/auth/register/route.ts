@@ -1,11 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
+
+// NOTE: This endpoint only creates "applicant" users.
+// Admin and other privileged users must be created by an existing admin
+// through the admin panel or via the database seed script.
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip =
+      request.headers.get("x-forwarded-for") ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    const { success } = checkRateLimit(`register:${ip}`, RATE_LIMITS.register);
+    if (!success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
-    const { email, password, name, role } = body;
+    const { email, password, name } = body;
 
     // Validate required fields
     if (!email || !password || !name) {
@@ -24,26 +42,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate password strength
+    // Validate password strength: min 8 chars, at least one uppercase, one lowercase, one digit
     if (password.length < 8) {
       return NextResponse.json(
         { error: "Password must be at least 8 characters long" },
         { status: 400 }
       );
     }
-
-    // Validate role if provided
-    const allowedRoles = [
-      "applicant",
-      "admin",
-      "screening_committee",
-      "empanelment_committee",
-      "dg",
-    ];
-    const userRole = role || "applicant";
-    if (!allowedRoles.includes(userRole)) {
+    if (!/[A-Z]/.test(password)) {
       return NextResponse.json(
-        { error: `Invalid role. Allowed: ${allowedRoles.join(", ")}` },
+        { error: "Password must contain at least one uppercase letter" },
+        { status: 400 }
+      );
+    }
+    if (!/[a-z]/.test(password)) {
+      return NextResponse.json(
+        { error: "Password must contain at least one lowercase letter" },
+        { status: 400 }
+      );
+    }
+    if (!/[0-9]/.test(password)) {
+      return NextResponse.json(
+        { error: "Password must contain at least one digit" },
         { status: 400 }
       );
     }
@@ -59,14 +79,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash password and create user
+    // Hash password and create user — always as "applicant" to prevent privilege escalation
     const hashedPassword = await hashPassword(password);
     const user = await prisma.user.create({
       data: {
         email: email.toLowerCase().trim(),
         password: hashedPassword,
         name: name.trim(),
-        role: userRole,
+        role: "applicant",
       },
       select: {
         id: true,

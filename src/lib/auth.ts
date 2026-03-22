@@ -1,6 +1,35 @@
 import bcrypt from "bcryptjs";
 
-const TOKEN_SECRET = process.env.TOKEN_SECRET || "npc-portal-secret-key-change-in-production";
+// ─── Secret Resolution ───────────────────────────────────────
+// Deferred check: validates at first request, not at import/build time
+
+let _secretValidated = false;
+
+function getTokenSecret(): string {
+  const secret = process.env.TOKEN_SECRET || process.env.NEXTAUTH_SECRET;
+
+  if (!_secretValidated) {
+    _secretValidated = true;
+
+    if (!process.env.NODE_ENV) {
+      console.warn(
+        "WARNING: NODE_ENV is not set. Defaulting to development behavior. Set NODE_ENV explicitly in production."
+      );
+    }
+
+    if (process.env.NODE_ENV === "production") {
+      if (!secret || secret.includes("change-in-production")) {
+        console.error(
+          "FATAL: TOKEN_SECRET or NEXTAUTH_SECRET must be set to a strong, unique value in production. Exiting."
+        );
+        process.exit(1);
+      }
+    }
+  }
+
+  return secret || "npc-portal-dev-only-secret-do-not-use-in-prod";
+}
+
 const TOKEN_EXPIRY_HOURS = 24;
 
 // ─── Password Helpers ──────────────────────────────────────────
@@ -34,7 +63,7 @@ export function generateToken(userId: string, role: string): string {
   // Simple base64 encoding with a signature suffix for tamper detection
   const data = Buffer.from(json).toString("base64url");
   const signature = Buffer.from(
-    simpleHmac(data, TOKEN_SECRET)
+    simpleHmac(data, getTokenSecret())
   ).toString("base64url");
   return `${data}.${signature}`;
 }
@@ -46,7 +75,7 @@ export function verifyToken(token: string): TokenPayload | null {
 
     // Verify signature
     const expectedSig = Buffer.from(
-      simpleHmac(data, TOKEN_SECRET)
+      simpleHmac(data, getTokenSecret())
     ).toString("base64url");
     if (signature !== expectedSig) return null;
 
