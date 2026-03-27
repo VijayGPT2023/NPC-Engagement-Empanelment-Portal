@@ -52,13 +52,17 @@ export default function Navbar({ user }: NavbarProps) {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         {/* Logo / Title */}
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex flex-col leading-tight">
-            <span className="text-base font-bold tracking-wide text-white">
-              {t("common.orgName")}
-            </span>
-            <span className="text-xs text-blue-200">
-              {t("common.appName")}
-            </span>
+          <Link href="/" className="flex items-center gap-2.5">
+            <img src="/emblem_goi.png" alt="Government of India Emblem" className="h-10 w-auto" />
+            <img src="/npc_logo.png" alt="NPC Logo" className="h-10 w-auto" />
+            <div className="flex flex-col leading-tight">
+              <span className="text-base font-bold tracking-wide text-white">
+                {t("common.orgName")}
+              </span>
+              <span className="text-xs text-blue-200">
+                {t("common.appName")}
+              </span>
+            </div>
           </Link>
         </div>
 
