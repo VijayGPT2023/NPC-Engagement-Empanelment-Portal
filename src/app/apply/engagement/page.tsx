@@ -229,7 +229,7 @@ const STEP_LABELS = [
   "Qualifications",
   "Experience",
   "Empanelment",
-  "Declaration & Submit",
+  "Documents & Declaration",
 ];
 
 const GENDER_OPTIONS = [
@@ -1798,55 +1798,11 @@ export default function EngagementApplicationPage() {
 
     return (
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">Declaration & Submit</h2>
-        <p className="text-sm text-gray-500 mb-6">Review your application before final submission.</p>
+        <h2 className="text-xl font-bold text-gray-900 mb-1">Documents & Declaration</h2>
+        <p className="text-sm text-gray-500 mb-6">Review your documents and accept the declaration to submit.</p>
 
         <div className="space-y-6">
-          {/* Post Details */}
-          {selectedPost && (
-            <Card title="Post Details">
-              <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                <div><span className="text-gray-500">Title:</span> <span className="font-medium">{selectedPost.title}</span></div>
-                <div><span className="text-gray-500">Adv. No:</span> <span className="font-medium">{selectedPost.advertisementNo}</span></div>
-                <div><span className="text-gray-500">Domain:</span> <span className="font-medium">{selectedPost.domain}</span></div>
-                <div><span className="text-gray-500">Location:</span> <span className="font-medium">{selectedPost.placeOfDeployment}</span></div>
-              </div>
-            </Card>
-          )}
-
-          {/* Personal Details */}
-          <Card title="Personal Details">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-              <div><span className="text-gray-500">Name:</span> <span className="font-medium">{state.title} {state.fullName}</span></div>
-              <div><span className="text-gray-500">DOB:</span> <span className="font-medium">{state.dateOfBirth}</span></div>
-              <div><span className="text-gray-500">Gender:</span> <span className="font-medium">{state.gender}</span></div>
-              <div><span className="text-gray-500">Contact:</span> <span className="font-medium">{state.contactNo}</span></div>
-              <div><span className="text-gray-500">Email:</span> <span className="font-medium">{state.emailId}</span></div>
-              {state.aadhaarNo && (
-                <div><span className="text-gray-500">Aadhaar:</span> <span className="font-medium">{state.aadhaarNo}</span></div>
-              )}
-            </div>
-          </Card>
-
-          {/* Qualifications */}
-          <Card title="Qualifications">
-            <div className="text-sm space-y-1">
-              <p><span className="text-gray-500">Total:</span> <span className="font-medium">{state.qualifications.length}</span></p>
-              {highestQual && (
-                <p><span className="text-gray-500">Highest:</span> <span className="font-medium">{highestQual.degree} - {highestQual.discipline}</span></p>
-              )}
-            </div>
-          </Card>
-
-          {/* Experience */}
-          <Card title="Experience">
-            <div className="text-sm space-y-1">
-              <p><span className="text-gray-500">Entries:</span> <span className="font-medium">{state.experiences.length}</span></p>
-              <p><span className="text-gray-500">Total Years:</span> <span className="font-medium">{totalYears.toFixed(1)}</span></p>
-            </div>
-          </Card>
-
-          {/* Documents */}
+          {/* Documents — on top */}
           <Card title="Documents Attached">
             <div className="space-y-1">
               {docsList.map((doc, i) => (
@@ -1863,6 +1819,52 @@ export default function EngagementApplicationPage() {
                   <span className={doc.attached ? "text-gray-700" : "text-gray-400"}>{doc.label}</span>
                 </div>
               ))}
+            </div>
+          </Card>
+
+          {/* Application Summary */}
+          <Card title="Application Summary">
+            <div className="space-y-4">
+              {selectedPost && (
+                <div>
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Post Applied For</h4>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
+                    <div><span className="text-gray-500">Title:</span> <span className="font-medium">{selectedPost.title}</span></div>
+                    <div><span className="text-gray-500">Adv. No:</span> <span className="font-medium">{selectedPost.advertisementNo}</span></div>
+                    <div><span className="text-gray-500">Domain:</span> <span className="font-medium">{selectedPost.domain}</span></div>
+                    <div><span className="text-gray-500">Location:</span> <span className="font-medium">{selectedPost.placeOfDeployment}</span></div>
+                  </div>
+                </div>
+              )}
+              <hr className="border-gray-100" />
+              <div>
+                <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Personal Details</h4>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
+                  <div><span className="text-gray-500">Name:</span> <span className="font-medium">{state.title} {state.fullName}</span></div>
+                  <div><span className="text-gray-500">DOB:</span> <span className="font-medium">{state.dateOfBirth}</span></div>
+                  <div><span className="text-gray-500">Gender:</span> <span className="font-medium">{state.gender}</span></div>
+                  <div><span className="text-gray-500">Contact:</span> <span className="font-medium">{state.contactNo}</span></div>
+                  <div><span className="text-gray-500">Email:</span> <span className="font-medium">{state.emailId}</span></div>
+                  {state.aadhaarNo && (
+                    <div><span className="text-gray-500">Aadhaar:</span> <span className="font-medium">{state.aadhaarNo}</span></div>
+                  )}
+                </div>
+              </div>
+              <hr className="border-gray-100" />
+              <div className="grid grid-cols-2 gap-x-6 text-sm">
+                <div>
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Qualifications</h4>
+                  <p><span className="text-gray-500">Total:</span> <span className="font-medium">{state.qualifications.length}</span></p>
+                  {highestQual && (
+                    <p><span className="text-gray-500">Highest:</span> <span className="font-medium">{highestQual.degree} - {highestQual.discipline}</span></p>
+                  )}
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Experience</h4>
+                  <p><span className="text-gray-500">Entries:</span> <span className="font-medium">{state.experiences.length}</span></p>
+                  <p><span className="text-gray-500">Total Years:</span> <span className="font-medium">{totalYears.toFixed(1)}</span></p>
+                </div>
+              </div>
             </div>
           </Card>
 

@@ -148,7 +148,7 @@ const STEPS = [
   "Educational Qualifications",
   "Work Experience & CV",
   "Service Experience",
-  "Declaration & Submit",
+  "Documents & Declaration",
 ];
 
 const GENDER_OPTIONS = [
@@ -2287,8 +2287,42 @@ export default function EmpanelmentApplicationPage() {
     const c = form.categoryDomain;
     const o = form.offices;
 
+    const docsList = [
+      { label: "Passport Photo", attached: !!form.personal.photoFile },
+      { label: "Aadhaar Card", attached: !!form.personal.aadhaarFile },
+      { label: "CV", attached: !!form.cvFile },
+      ...form.qualifications.map((q, i) => ({
+        label: `Qualification ${i + 1} Certificate`,
+        attached: !!q.certificateFile,
+      })),
+      ...form.experiences.map((x, i) => ({
+        label: `Experience ${i + 1} Certificate`,
+        attached: !!x.certificateFile,
+      })),
+    ];
+
     return (
       <div className="space-y-6">
+        {/* Documents Checklist — on top */}
+        <Card title="Documents Attached">
+          <div className="space-y-1">
+            {docsList.map((doc, i) => (
+              <div key={i} className="flex items-center gap-2 text-sm">
+                {doc.attached ? (
+                  <svg className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <svg className="h-4 w-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                )}
+                <span className={doc.attached ? "text-gray-700" : "text-gray-400"}>{doc.label}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
         {/* Summary */}
         <Card title="Application Summary">
           {/* Personal */}
