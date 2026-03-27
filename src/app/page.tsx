@@ -75,9 +75,13 @@ export default function HomePage() {
           <div className="flex flex-col items-center text-center">
             {/* Logos */}
             <div className="mb-6 flex items-center gap-6">
-              <img src="/emblem_goi.png" alt="Government of India Emblem" className="h-16 w-auto sm:h-20 drop-shadow-lg" />
+              <div className="rounded-full bg-white p-2 shadow-md">
+                <img src="/emblem_goi.png" alt="Government of India Emblem" className="h-14 w-auto sm:h-16" />
+              </div>
               <div className="h-12 w-px bg-white/30" />
-              <img src="/npc_logo.png" alt="NPC Logo" className="h-16 w-auto sm:h-20 drop-shadow-lg" />
+              <div className="rounded-full bg-white p-2 shadow-md">
+                <img src="/npc_logo.png" alt="NPC Logo" className="h-14 w-auto sm:h-16" />
+              </div>
             </div>
 
             <div className="mb-2 inline-block rounded-full bg-white/10 px-5 py-1.5 text-sm font-medium tracking-wide text-blue-100 backdrop-blur-sm">
@@ -105,7 +109,7 @@ export default function HomePage() {
                 </Button>
               </Link>
               <Link href="/apply/empanelment">
-                <Button variant="outline" size="lg" className="border-white/40 !text-white hover:bg-white/10 px-8">
+                <Button variant="primary" size="lg" className="bg-yellow-500 !text-blue-900 hover:bg-yellow-400 shadow-lg px-8 font-semibold">
                   Apply for Empanelment
                 </Button>
               </Link>
@@ -154,7 +158,7 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
                   </svg>
                 </div>
-                <div className="absolute top-4 right-4 text-3xl font-black text-gray-100 group-hover:text-blue-100 transition-colors">{item.step}</div>
+                <div className="absolute top-4 right-4 text-3xl font-black text-gray-300 group-hover:text-blue-300 transition-colors">{item.step}</div>
                 <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
                 <p className="mt-2 text-sm text-gray-600 leading-relaxed">{item.desc}</p>
               </div>
@@ -434,8 +438,12 @@ export default function HomePage() {
           <div className="grid gap-8 md:grid-cols-4">
             <div>
               <div className="flex items-center gap-3">
-                <img src="/emblem_goi.png" alt="" className="h-10 w-auto opacity-80" />
-                <img src="/npc_logo.png" alt="" className="h-10 w-auto opacity-80" />
+                <div className="rounded-full bg-white p-1.5">
+                  <img src="/emblem_goi.png" alt="" className="h-8 w-auto" />
+                </div>
+                <div className="rounded-full bg-white p-1.5">
+                  <img src="/npc_logo.png" alt="" className="h-8 w-auto" />
+                </div>
               </div>
               <h3 className="mt-3 text-lg font-bold text-white">
                 {t("common.orgName")}

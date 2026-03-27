@@ -53,8 +53,12 @@ export default function Navbar({ user }: NavbarProps) {
         {/* Logo / Title */}
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5">
-            <img src="/emblem_goi.png" alt="Government of India Emblem" className="h-10 w-auto" />
-            <img src="/npc_logo.png" alt="NPC Logo" className="h-10 w-auto" />
+            <div className="rounded-full bg-white p-1">
+              <img src="/emblem_goi.png" alt="Government of India Emblem" className="h-8 w-auto" />
+            </div>
+            <div className="rounded-full bg-white p-1">
+              <img src="/npc_logo.png" alt="NPC Logo" className="h-8 w-auto" />
+            </div>
             <div className="flex flex-col leading-tight">
               <span className="text-base font-bold tracking-wide text-white">
                 {t("common.orgName")}
